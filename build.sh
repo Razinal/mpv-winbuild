@@ -20,7 +20,7 @@ main() {
     elif [ "$target" == "all-64" ]; then
         package "64"
         package "64-v3"
-    else [ "$target" == "all" ]; then
+    else [ "$target" == "all" ];
         package "32"
         package "64"
         package "64-v3"
