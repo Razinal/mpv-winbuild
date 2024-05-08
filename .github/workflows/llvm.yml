@@ -7,7 +7,7 @@ on:
       pgo:
         description: "Build llvm with PGO"
         required: false
-        default: false
+        default: true
         type: boolean   
       no_save_cache:
         description: "Don't save caches after success build"
@@ -22,7 +22,7 @@ on:
       build_target:
         description: "Toolchain build target"
         required: false
-        default: "all-64bit"
+        default: "64bit-v3"
         type: choice
         options:
         - 32bit
@@ -38,7 +38,7 @@ on:
       release:
         description: "Publish a release after mpv build"
         required: false
-        default: false
+        default: true
         type: boolean
       run_name:
         description: 'The name displayed in the list of workflow runs'
