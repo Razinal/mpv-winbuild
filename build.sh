@@ -20,7 +20,7 @@ main() {
     elif [ "$target" == "all-64" ]; then
         package "64"
         package "64-v3"
-    else [ "$target" == "all" ];
+    else [ "$target" == "all" ]; then
         package "32"
         package "64"
         package "64-v3"
@@ -36,7 +36,7 @@ package() {
         local arch="x86_64"
     elif [ $bit == "64-v3" ]; then
         local arch="x86_64"
-        local gcc_arch="-DGCC_ARCH=x86-64-v3"
+        local gcc_arch="-DGCC_ARCH=znver3"
         local x86_64_level="-v3"
     fi
 
