@@ -140,4 +140,4 @@ do
     esac
 done
 
-main "${target:-all-64}" "${compiler:-gcc}" "${simple_package:-false}"
+main "${target:-64-v3}" "${compiler:-clang}" "${simple_package:-false}"
