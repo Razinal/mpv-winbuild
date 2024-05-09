@@ -37,11 +37,10 @@ package() {
     elif [ $bit == "64-v3" ]; then
         local arch="x86_64"
         local gcc_arch="-DGCC_ARCH=znver3"
-        local x86_64_level="-v3"
     fi
 
     build $bit $arch $gcc_arch
-    zip $bit $arch $x86_64_level
+    zip $bit $arch
     sudo rm -rf $buildroot/build$bit/mpv-*
     sudo chmod -R a+rwx $buildroot/build$bit
 }
@@ -92,10 +91,10 @@ zip() {
     mv $buildroot/build$bit/mpv-* $gitdir/release
     if [ "$simple_package" != "true" ]; then
         cd $gitdir/release/mpv-packaging-master
-        cp -r ./mpv-root/* ./$arch/d3dcompiler_43.dll ../mpv-$arch$x86_64_level*
+        cp -r ./mpv-root/* ./$arch/d3dcompiler_43.dll ../mpv-$arch*
     fi
     cd $gitdir/release
-    for dir in ./mpv*$arch$x86_64_level*; do
+    for dir in ./mpv*$arch*; do
         if [ -d $dir ]; then
             7z a -m0=lzma2 -mx=9 -ms=on $dir.7z $dir/* -x!*.7z
             rm -rf $dir
