@@ -6,7 +6,7 @@ main() {
     clang_root=$(pwd)/clang_root
     buildroot=$(pwd)
     srcdir=$(pwd)/src_packages
-    local target=$1
+    target=$1
     compiler=$2
     simple_package=$3
 
@@ -25,7 +25,6 @@ main() {
         package "64"
         package "64-v3"
     fi
-    rm -rf ./release/mpv-packaging-master
 }
 
 package() {
@@ -86,15 +85,14 @@ build() {
 zip() {
     local bit=$1
     local arch=$2
-    local x86_64_level=$3
 
-    mv $buildroot/build$bit/mpv-* $gitdir/release
+    mv $buildroot/build$bit/mpv* $gitdir/release
     if [ "$simple_package" != "true" ]; then
         cd $gitdir/release/mpv-packaging-master
         cp -r ./mpv-root/* ./$arch/d3dcompiler_43.dll ../mpv-$arch*
     fi
     cd $gitdir/release
-    for dir in ./mpv*$arch*; do
+    for dir in ./mpv*; do
         if [ -d $dir ]; then
             7z a -m0=lzma2 -mx=9 -ms=on $dir.7z $dir/* -x!*.7z
             rm -rf $dir
