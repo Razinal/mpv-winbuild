@@ -407,7 +407,7 @@ jobs:
           path: logs.7z
 
       - name: "Get artifacts' name and path"
-        id: get_files
+        id: get_files_default
         uses: actions/github-script@v7
         with:
           script: |
@@ -444,19 +444,43 @@ jobs:
             const ffmpeg_path = (await globber.glob())[0]
             await exec.exec(`7z a -m0=lzma2 -mx=9 -ms=on mpv-winbuild-cmake/release/${ffmpeg_name}.7z ${ffmpeg_path}`)
 
-      - name: upload mpv
+      - name: upload mpv default
         uses: actions/upload-artifact@v4
-        if: ${{ env.mpv_name && env.mpv_path }}
+        if: ${{ env.mpv_name }}
         with:
           name: ${{ env.mpv_name }}
           path: ${{ env.mpv_path }}
-          
+
       - name: upload ffmpeg
         uses: actions/upload-artifact@v4
         if: ${{ env.ffmpeg_name }}
         with:
           name: ${{ env.ffmpeg_name }}
           path: mpv-winbuild-cmake/release/${{ env.ffmpeg_name }}.7z
+
+      - name: "Get mpv 7z name and path"
+        id: get_files_7z
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const path = require('path');
+            const types = ["mpv"];
+            for (let type of types) {
+              const globber = await glob.create(`mpv-winbuild-cmake/release/${type}*.7z`);
+              const files = await globber.glob();
+              if ( files.length > 0 ) {
+                const file = files[0];
+                core.exportVariable( `${type}_7name`, path.basename(file) );
+                core.exportVariable( `${type}_7path`, file );
+              }
+            }
+
+      - name: upload mpv 7z
+        uses: actions/upload-artifact@v4
+        if: ${{ env.mpv_7name }}
+        with:
+          name: ${{ env.mpv_7name }}
+          path: ${{ env.mpv_7path }}
 
       - name: Save clang sysroot cache
         if: ${{ inputs.compiler =='clang' && inputs.no_save_cache != true && matrix.lgpl != true }}
