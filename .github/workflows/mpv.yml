@@ -412,7 +412,7 @@ jobs:
         with:
           script: |
             const path = require('path');
-            const types = ["mpv-debug", "mpv-dev", "mpv"];
+            const types = ["mpv"];
             const lgpl = ${{ matrix.lgpl }} ? "-lgpl" : "";
             let arch="";
             switch ( "${{ matrix.bit }}" ) {
@@ -423,7 +423,7 @@ jobs:
                 arch = "x86_64";
                 break;
               case "64-v3":
-                arch = "x86_64-v3";
+                arch = "x86_64";
                 break;
             }
             for (let type of types) {
@@ -444,18 +444,6 @@ jobs:
             const ffmpeg_path = (await globber.glob())[0]
             await exec.exec(`7z a -m0=lzma2 -mx=9 -ms=on mpv-winbuild-cmake/release/${ffmpeg_name}.7z ${ffmpeg_path}`)
 
-      - name: upload mpv-debug
-        uses: actions/upload-artifact@v4
-        if: ${{ env.mpv-debug_name && env.mpv-debug_path }}
-        with:
-          name: ${{ env.mpv-debug_name }}
-          path: ${{ env.mpv-debug_path }}
-      - name: upload mpv-dev
-        uses: actions/upload-artifact@v4
-        if: ${{ env.mpv-dev_name && env.mpv-dev_path }}
-        with:
-          name: ${{ env.mpv-dev_name }}
-          path: ${{ env.mpv-dev_path }}
       - name: upload mpv
         uses: actions/upload-artifact@v4
         if: ${{ env.mpv_name && env.mpv_path }}
